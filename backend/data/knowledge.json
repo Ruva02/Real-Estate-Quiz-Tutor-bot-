@@ -1,0 +1,29 @@
+{
+  "concepts": [
+    {
+      "topic": "Real Estate Valuation",
+      "definition": "The process of estimating the market value of a property based on its location, condition, and market demand.",
+      "factors": ["Location", "Infrastructure", "Proximity to transit", "Market demand", "Current economic climate"]
+    },
+    {
+      "topic": "ROI (Return on Investment)",
+      "definition": "A measure used to evaluate the efficiency of an investment. In real estate, it's calculated by dividing the net profit by the total cost of the investment.",
+      "formula": "(Net Profit / Total Cost) * 100"
+    },
+    {
+      "topic": "Market Trends in India",
+      "definition": "Current shifts in the Indian real estate market, such as the move towards gated communities, the impact of RERA, and the rise of IT hubs.",
+      "details": "RERA (Real Estate Regulatory Authority) has increased transparency. Metro connectivity is a major price driver in cities like Indore and Bangalore."
+    },
+    {
+      "topic": "Rental Yield",
+      "definition": "The annual rental income of a property expressed as a percentage of the property's value.",
+      "calculation": "(Annual Rent / Property Value) * 100"
+    },
+    {
+      "topic": "Indore Real Estate Context",
+      "definition": "Indore is one of the fastest-growing cities in Central India, known as 'Mini Mumbai'.",
+      "key_drivers": ["Super Corridor", "IT Parks (TCS/Infosys)", "Upcoming Metro", "Swachh Bharat ranking"]
+    }
+  ]
+}

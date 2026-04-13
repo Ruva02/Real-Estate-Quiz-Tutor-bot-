@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+python-dotenv
+groq
+faiss-cpu
+sentence-transformers
+pydantic
+pydantic-settings
+python-multipart
