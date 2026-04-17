@@ -7,3 +7,8 @@ sentence-transformers
 pydantic
 pydantic-settings
 python-multipart
+sqlalchemy
+bcrypt
+python-jose[cryptography]
+chromadb
+numpy
