@@ -26,7 +26,7 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { has
         <div className="min-h-screen flex items-center justify-center bg-slate-950 p-10">
           <div className="glass-panel p-10 rounded-[3rem] text-center border-rose-500/20 max-w-lg">
             <h2 className="text-2xl font-black text-white mb-4 italic uppercase">Initialization Error</h2>
-            <p className="text-slate-400 text-sm mb-8 leading-relaxed">The Guru's cognitive bridge encountered an anomaly. Please re-establish synchronization.</p>
+            <p className="text-slate-400 text-sm mb-8 leading-relaxed">Haven's cognitive bridge encountered an anomaly. Please re-establish synchronization.</p>
             <button 
               onClick={() => window.location.reload()}
               className="px-8 py-4 bg-sky-500 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-sky-400 transition-all shadow-lg shadow-sky-500/20"
@@ -59,7 +59,7 @@ const Sidebar = ({ activePath, onLogout, user }: { activePath: string; onLogout:
             <GraduationCap className="text-white" size={24} />
           </div>
           <span className="text-xl font-black tracking-tight text-white italic underline decoration-sky-500/50 underline-offset-8">
-            GURU<span className="text-sky-500">AI</span>
+            HAVEN<span className="text-sky-500">AI</span>
           </span>
         </div>
 
@@ -172,7 +172,7 @@ function Dashboard() {
     const score = Number(stats?.total_score || 0);
     const level = Math.floor(score / 500) + 1;
     const progress = ((score % 500) / 500) * 100;
-    const titles = ["Novice", "Analyst", "Strategist", "Expert", "Master", "Guru"];
+    const titles = ["Novice", "Analyst", "Strategist", "Expert", "Master", "Zenith"];
     const titleIndex = Math.max(0, Math.min(level - 1, titles.length - 1));
     return { level, progress: isNaN(progress) ? 0 : progress, title: titles[titleIndex] || "Novice" };
   }, [stats]);
@@ -220,7 +220,7 @@ function Dashboard() {
   return (
     <div className="p-10">
       <div className="grid grid-cols-12 gap-10">
-        <div className="col-span-12 xl:col-span-5 space-y-8">
+        <div className="col-span-12 xl:col-span-6 space-y-8">
           <div className="flex items-center justify-between">
             <h3 className="text-sm font-bold uppercase tracking-[0.25em] text-slate-500 flex items-center">
               <Sparkles size={14} className="mr-2 text-sky-500" /> Target Listing
@@ -284,9 +284,9 @@ function Dashboard() {
           </div>
         </div>
 
-        <div className="col-span-12 xl:col-span-7 flex flex-col min-h-[600px]">
+        <div className="col-span-12 xl:col-span-6 flex flex-col self-start">
           <div className="flex items-center justify-between mb-8 px-2">
-             <h3 className="text-sm font-bold uppercase tracking-[0.25em] text-slate-500">Guru Session</h3>
+             <h3 className="text-sm font-bold uppercase tracking-[0.25em] text-slate-500">Haven Session</h3>
              <div className="flex items-center space-x-2">
                <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
                <span className="text-[10px] font-bold text-emerald-500/70 tracking-widest uppercase">Encryption Active</span>
@@ -300,7 +300,7 @@ function Dashboard() {
                </div>
             </div>
           ) : data && (
-            <div key={refreshKey} className="flex-1 relative">
+            <div key={refreshKey} className="h-[580px] relative">
                <ChatUI 
                 question={data.question} 
                 onAnswer={handleAnswer} 

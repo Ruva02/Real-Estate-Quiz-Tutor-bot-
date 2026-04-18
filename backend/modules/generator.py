@@ -18,6 +18,11 @@ class QuestionGenerator:
         
         # Define complex real estate themes for diversity
         THEMES = [
+            "Real Estate Valuation",
+            "ROI (Return on Investment)",
+            "Market Trends in India",
+            "Rental Yield",
+            "Indore Real Estate Context",
             "Risk Mitigation & Contingency Planning",
             "Legal & Regulatory Compliance",
             "Urban Planning & Zoning Impact",

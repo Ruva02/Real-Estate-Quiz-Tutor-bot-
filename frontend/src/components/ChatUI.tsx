@@ -110,6 +110,16 @@ const AssessmentCard = ({ assessment, onNext }: { assessment: Assessment; onNext
         </p>
       </div>
 
+      <div className="flex justify-end pt-4 relative z-10">
+        <button 
+          onClick={onNext}
+          className="group flex items-center space-x-3 px-8 py-4 bg-sky-500 hover:bg-sky-400 text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] transition-all shadow-lg shadow-sky-500/20 active:scale-95 border border-sky-400/50"
+        >
+          <span>Initialize Next Case</span>
+          <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+        </button>
+      </div>
+
     </motion.div>
   );
 };
@@ -151,7 +161,7 @@ const ChatUI = ({ question, onAnswer, isProcessing, onNext }: ChatUIProps) => {
       <div className="absolute inset-0 bg-gradient-to-b from-sky-500/5 to-transparent pointer-events-none" />
       
       {/* Chat Header */}
-      <div className="px-10 py-6 border-b border-white/5 bg-slate-900/60 backdrop-blur-xl flex items-center justify-between relative z-10 shadow-lg">
+      <div className="px-8 py-4 border-b border-white/5 bg-slate-900/60 backdrop-blur-xl flex items-center justify-between relative z-10 shadow-lg">
         <div className="flex items-center space-x-3">
           <div className="w-10 h-10 bg-gradient-to-br from-sky-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg ring-4 ring-sky-500/10">
             <Bot className="text-white" size={20} />
@@ -185,7 +195,7 @@ const ChatUI = ({ question, onAnswer, isProcessing, onNext }: ChatUIProps) => {
       </div>
 
       {/* Messages */}
-      <div ref={scrollRef} className="flex-1 overflow-y-auto p-10 space-y-10 relative z-10 custom-scrollbar">
+      <div ref={scrollRef} className="flex-1 overflow-y-auto p-6 space-y-8 relative z-10 custom-scrollbar">
         <AnimatePresence initial={false}>
           {messages.map((msg, i) => (
             <motion.div
@@ -247,9 +257,9 @@ const ChatUI = ({ question, onAnswer, isProcessing, onNext }: ChatUIProps) => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 30 }}
-            className="p-10 bg-slate-900/60 border-t border-white/5 backdrop-blur-3xl relative z-10 shadow-[0_-20px_40px_rgba(0,0,0,0.2)]"
+            className="p-6 bg-slate-900/60 border-t border-white/5 backdrop-blur-3xl relative z-10 shadow-[0_-20px_40px_rgba(0,0,0,0.2)]"
           >
-            <div className="relative group max-w-4xl mx-auto">
+            <div className="relative group w-full mx-auto">
               <div className="absolute -inset-1 bg-gradient-to-r from-sky-500/20 to-indigo-500/20 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-500" />
               <div className="relative">
                 <input

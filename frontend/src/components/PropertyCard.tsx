@@ -142,7 +142,7 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
             <ShieldCheck className="text-sky-400 shrink-0" size={16} />
           </div>
           <p className="text-xs text-slate-300 font-medium leading-relaxed italic">
-            "{property?.highlights || 'Consult your Guru for detailed property insights and valuation analysis.'}"
+            "{property?.highlights || 'Consult Haven for detailed property insights and valuation analysis.'}"
           </p>
         </div>
       </div>
