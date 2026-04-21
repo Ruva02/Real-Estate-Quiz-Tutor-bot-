@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Send, Bot, User, Sparkles, Star, ThumbsUp, AlertCircle, Bookmark, ArrowRight, RefreshCcw, Activity } from 'lucide-react';
 
@@ -23,7 +23,7 @@ interface ChatUIProps {
   onNext: () => void;
 }
 
-const AssessmentCard = React.memo(({ assessment, onNext }: { assessment: Assessment; onNext: () => void }) => {
+const AssessmentCard = ({ assessment, onNext }: { assessment: Assessment; onNext: () => void }) => {
   return (
     <motion.div 
       initial={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -122,9 +122,7 @@ const AssessmentCard = React.memo(({ assessment, onNext }: { assessment: Assessm
 
     </motion.div>
   );
-});
-
-AssessmentCard.displayName = 'AssessmentCard';
+};
 
 const ChatUI = ({ question, onAnswer, isProcessing, onNext }: ChatUIProps) => {
   const [input, setInput] = useState('');

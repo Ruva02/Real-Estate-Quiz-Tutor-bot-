@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { MapPin, Maximize, ShieldCheck, Zap, TrendingUp, Sparkles } from 'lucide-react';
 
@@ -18,7 +17,7 @@ interface PropertyCardProps {
   property: Property;
 }
 
-const PropertyCard = React.memo(({ property }: PropertyCardProps) => {
+const PropertyCard = ({ property }: PropertyCardProps) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
@@ -152,8 +151,6 @@ const PropertyCard = React.memo(({ property }: PropertyCardProps) => {
       <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-700" />
     </motion.div>
   );
-});
-
-PropertyCard.displayName = 'PropertyCard';
+};
 
 export default PropertyCard;
