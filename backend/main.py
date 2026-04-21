@@ -116,14 +116,30 @@ async def evaluate_answer(req: EvaluateRequest, current_user: User = Depends(get
     return result
 
 @app.post("/evaluate-stream")
-async def evaluate_answer_stream(req: EvaluateRequest, current_user: User = Depends(get_current_user)):
+async def evaluate_answer_stream(req: EvaluateRequest, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     rag = get_rag()
     evaluator = get_evaluator()
     context = rag.query(req.user_answer + " " + req.question)
     
     async def event_generator():
+        accumulated = ""
         async for chunk in evaluator.evaluate_stream(req.property_data, req.question, req.user_answer, context):
+            accumulated += chunk
             yield chunk
+        
+        # After stream finished, update User stats in DB
+        try:
+            result = json.loads(accumulated)
+            if result.get("missing_concepts"):
+                current_topics = list(current_user.weak_topics or [])
+                current_topics.extend(result["missing_concepts"])
+                current_user.weak_topics = list(set(current_topics))
+            
+            current_user.total_score += result.get("score", 0)
+            current_user.questions_answered += 1
+            db.commit()
+        except Exception as e:
+            print(f"Stream DB Update Error: {e}")
 
     return StreamingResponse(event_generator(), media_type="text/event-stream")
 

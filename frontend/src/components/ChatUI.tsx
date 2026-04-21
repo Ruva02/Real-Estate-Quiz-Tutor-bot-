@@ -50,13 +50,13 @@ const AssessmentCard = ({ assessment, onNext }: { assessment: Assessment; onNext
         </div>
         <div className="flex flex-col items-end">
           <div className="flex items-baseline space-x-1">
-            <span className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white via-sky-300 to-indigo-400 leading-none drop-shadow-sm">{assessment.score}</span>
+            <span className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-br from-white via-sky-300 to-indigo-400 leading-none drop-shadow-sm">{assessment?.score ?? 0}</span>
             <span className="text-slate-500 font-black text-lg">/10</span>
           </div>
           <div className="h-1.5 w-24 bg-white/5 rounded-full mt-2 overflow-hidden border border-white/5">
              <motion.div 
               initial={{ width: 0 }} 
-              animate={{ width: `${assessment.score * 10}%` }} 
+              animate={{ width: `${(assessment?.score || 0) * 10}%` }} 
               className="h-full bg-gradient-to-r from-sky-500 to-indigo-500 shadow-[0_0_15px_rgba(56,189,248,0.5)]" 
              />
           </div>
@@ -69,14 +69,14 @@ const AssessmentCard = ({ assessment, onNext }: { assessment: Assessment; onNext
             <ThumbsUp size={18} className="group-hover/box:scale-110 transition-transform" />
             <span className="text-[10px] font-black uppercase tracking-[0.2em]">Key Strengths</span>
           </div>
-          <p className="text-sm text-slate-300 leading-relaxed font-medium italic">"{assessment.strengths}"</p>
+          <p className="text-sm text-slate-300 leading-relaxed font-medium italic">"{assessment?.strengths || 'Consistent logic application.'}"</p>
         </div>
         <div className="bg-white/5 border border-white/10 p-6 rounded-[2rem] space-y-3 hover:bg-rose-500/5 hover:border-rose-500/20 transition-all group/box">
           <div className="flex items-center space-x-2 text-rose-400">
             <AlertCircle size={18} className="group-hover/box:scale-110 transition-transform" />
             <span className="text-[10px] font-black uppercase tracking-[0.2em]">Logical Gaps</span>
           </div>
-          <p className="text-sm text-slate-300 leading-relaxed font-medium italic">"{assessment.mistakes}"</p>
+          <p className="text-sm text-slate-300 leading-relaxed font-medium italic">"{assessment?.mistakes || 'No critical errors detected.'}"</p>
         </div>
       </div>
 
@@ -86,11 +86,14 @@ const AssessmentCard = ({ assessment, onNext }: { assessment: Assessment; onNext
           <span className="text-[10px] font-black uppercase tracking-[0.2em]">Framework Concepts</span>
         </div>
         <div className="flex flex-wrap gap-2">
-          {assessment.missing_concepts.map((concept, i) => (
+          {(assessment?.missing_concepts || []).map((concept, i) => (
             <span key={i} className="text-[10px] font-black bg-slate-950/40 text-slate-300 px-4 py-2 rounded-xl border border-white/10 uppercase tracking-widest hover:border-sky-500/50 hover:bg-sky-500/5 transition-all cursor-default shadow-lg">
               {concept}
             </span>
           ))}
+          {(!assessment?.missing_concepts || assessment.missing_concepts.length === 0) && (
+            <span className="text-[10px] text-slate-600 italic">Universal logic applied...</span>
+          )}
         </div>
       </div>
 
@@ -106,7 +109,7 @@ const AssessmentCard = ({ assessment, onNext }: { assessment: Assessment; onNext
           </div>
         </div>
         <p className="text-sm text-slate-200 leading-[1.8] font-medium tracking-tight">
-          {assessment.deep_explanation}
+          {assessment?.deep_explanation || 'Synthesizing detailed market evaluation...'}
         </p>
       </div>
 

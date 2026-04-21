@@ -232,22 +232,31 @@ function Dashboard() {
         }
       }
       
-      const result = JSON.parse(accumulated);
+      let result;
+      try {
+        result = JSON.parse(accumulated);
+        // Basic schema verification
+        if (typeof result.score !== 'number') result.score = 0;
+        if (!Array.isArray(result.missing_concepts)) result.missing_concepts = [];
+      } catch (e) {
+        console.error("Neural Synthesis Error: Failed to parse evaluation matrix", e);
+        throw new Error("Cognitive bridge synchronization failed. The AI response was malformed.");
+      }
       
-      // Update local storage/state with the result to keep everything in sync
-      // (The backend already updated the DB, but we refresh stats to be sure)
+      // Update local stats display after successful evaluation
       try {
         await axios.get(`http://localhost:8000/stats`, {
           headers: { Authorization: `Bearer ${token}` }
         });
+        // Note: The AuthContext 'user' state will refresh on next dashboard mount 
+        // or we could add a notify mechanism here.
       } catch (e) {
-        console.error("Stats refresh error", e);
+        console.error("Stats synchronization delay", e);
       }
       
       return result;
     } catch (err) {
-      console.error("Streaming error", err);
-      // Fallback to non-stream if needed or just error
+      console.error("Session integrity compromised", err);
       throw err;
     } finally {
       setEvaluating(false);
