@@ -204,14 +204,51 @@ function Dashboard() {
   const handleAnswer = async (answer: string) => {
     setEvaluating(true);
     try {
-      const res = await axios.post(`http://localhost:8000/evaluate`, {
-        property_data: data.property,
-        question: data.question,
-        user_answer: answer
-      }, {
-        headers: { Authorization: `Bearer ${token}` }
+      const response = await fetch(`http://localhost:8000/evaluate-stream`, {
+        method: 'POST',
+        headers: { 
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          property_data: data.property,
+          question: data.question,
+          user_answer: answer
+        })
       });
-      return res.data;
+
+      if (!response.ok) throw new Error('Evaluation failed');
+      
+      const reader = response.body?.getReader();
+      const decoder = new TextDecoder();
+      let accumulated = '';
+      
+      if (reader) {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          accumulated += decoder.decode(value, { stream: true });
+          // Optional: We could update UI state here if we wanted mid-stream feedback
+        }
+      }
+      
+      const result = JSON.parse(accumulated);
+      
+      // Update local storage/state with the result to keep everything in sync
+      // (The backend already updated the DB, but we refresh stats to be sure)
+      try {
+        await axios.get(`http://localhost:8000/stats`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+      } catch (e) {
+        console.error("Stats refresh error", e);
+      }
+      
+      return result;
+    } catch (err) {
+      console.error("Streaming error", err);
+      // Fallback to non-stream if needed or just error
+      throw err;
     } finally {
       setEvaluating(false);
     }

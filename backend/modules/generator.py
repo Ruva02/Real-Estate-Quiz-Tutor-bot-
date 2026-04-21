@@ -44,7 +44,6 @@ class QuestionGenerator:
             weak_topics = user_stats["weak_topics"]
             target_theme = random.choice(weak_topics) if weak_topics else target_theme
 
-        print(f"DEBUG: Generating question for Theme: {target_theme}")
 
         prompt = f"""
         You are a World-Class Real Estate Analyst and Masterclass Tutor.
@@ -82,7 +81,7 @@ class QuestionGenerator:
             # Remove quotes if the LLM added them
             question = question.strip('"').strip("'")
         except Exception as e:
-            print(f"LLM Question Generation failed: {e}")
+            logging.error(f"LLM Question Generation failed: {e}")
             # Fallback to smart random question
             question_types = [
                 f"How would current {target_theme} concerns impact the long-term holding strategy for this {prop.get('type')}?",

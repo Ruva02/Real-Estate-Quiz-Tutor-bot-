@@ -6,6 +6,8 @@ import json
 import os
 from sqlalchemy.orm import Session
 
+import aiofiles
+from fastapi.responses import StreamingResponse
 from modules.generator import get_generator
 from modules.evaluator import get_evaluator
 from modules.rag import get_rag
@@ -89,15 +91,15 @@ def next_question(current_user: User = Depends(get_current_user)):
     }
 
 @app.post("/evaluate")
-def evaluate_answer(req: EvaluateRequest, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+async def evaluate_answer(req: EvaluateRequest, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     rag = get_rag()
     evaluator = get_evaluator()
     
     # Retrieve context for the answer
     context = rag.query(req.user_answer + " " + req.question)
     
-    # Evaluate via LLM
-    result_str = evaluator.evaluate(req.property_data, req.question, req.user_answer, context)
+    # Evaluate via LLM (Now Async)
+    result_str = await evaluator.evaluate(req.property_data, req.question, req.user_answer, context)
     result = json.loads(result_str)
     
     # Update user stats in DB
@@ -113,6 +115,18 @@ def evaluate_answer(req: EvaluateRequest, current_user: User = Depends(get_curre
     
     return result
 
+@app.post("/evaluate-stream")
+async def evaluate_answer_stream(req: EvaluateRequest, current_user: User = Depends(get_current_user)):
+    rag = get_rag()
+    evaluator = get_evaluator()
+    context = rag.query(req.user_answer + " " + req.question)
+    
+    async def event_generator():
+        async for chunk in evaluator.evaluate_stream(req.property_data, req.question, req.user_answer, context):
+            yield chunk
+
+    return StreamingResponse(event_generator(), media_type="text/event-stream")
+
 @app.get("/stats")
 def get_stats(current_user: User = Depends(get_current_user)):
     return {
@@ -123,18 +137,20 @@ def get_stats(current_user: User = Depends(get_current_user)):
     }
 
 @app.get("/all-properties")
-def get_all_properties(current_user: User = Depends(get_current_user)):
+async def get_all_properties(current_user: User = Depends(get_current_user)):
     try:
-        with open(os.path.join("data", "listings.json"), "r") as f:
-            return json.load(f)
+        async with aiofiles.open(os.path.join("data", "listings.json"), mode="r") as f:
+            content = await f.read()
+            return json.loads(content)
     except FileNotFoundError:
         return []
 
 @app.get("/academy")
-def get_academy(current_user: User = Depends(get_current_user)):
+async def get_academy(current_user: User = Depends(get_current_user)):
     try:
-        with open(os.path.join("data", "knowledge.json"), "r") as f:
-            return json.load(f)
+        async with aiofiles.open(os.path.join("data", "knowledge.json"), mode="r") as f:
+            content = await f.read()
+            return json.loads(content)
     except FileNotFoundError:
         return {"concepts": []}
 
